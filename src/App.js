@@ -4,10 +4,9 @@ import './App.css';
 import { Route } from 'react-router-dom';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import Test from './components/Test';
 import UserContext from './contexts/UserContext';
 import RedirectAuthRoute from './utils/RedirectAuthRoute';
-
+import Home from './onepirate/Home';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -16,7 +15,7 @@ function App() {
       <div className="App">
         <RedirectAuthRoute path="/signin" component={SignIn} />
         <RedirectAuthRoute path="/signup" component={SignUp} />
-        <Route path="/" component={Test} />
+        <Route exact path="/" component={Home}/>
       </div>
     </UserContext.Provider>
   );
