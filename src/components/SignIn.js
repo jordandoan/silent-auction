@@ -48,10 +48,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignIn() {
-  const classes = useStyles();
+export default function SignIn(props) {
 
-  const [fields, setFields] = useState({username: "", password: ""});
+  const classes = useStyles();
+  const username = (props.location.state && props.location.state.username) || "";
+  const [fields, setFields] = useState({username: username, password: ""});
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState({username: false, password: false});
   const [errMsg, setMsg] = useState("");
@@ -87,6 +88,8 @@ export default function SignIn() {
             setLoading(false);
             setMsg("Success!");
             User.setToken(res.data.token);
+            localStorage.setItem('token', res.data.token);
+            props.history.push("/dashboard");
           }, 750)
         })
         .catch(err => {
@@ -121,6 +124,7 @@ export default function SignIn() {
             label="Username"
             name="username"
             error={error.username}
+            defaultValue={fields.username}
           />
           <TextField
             variant="outlined"

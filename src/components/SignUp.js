@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
   const [fields, setFields] = useState({first_name: "", last_name: "", username: "", password: "", is_seller: false})
   const [loading, setLoading] = useState(false);
@@ -90,6 +90,7 @@ export default function SignUp() {
           setTimeout( () => {
             setLoading(false);
             setMsg("Success!");
+            props.history.push("/signin", {username: fields.username});
           }, 750)
         })
         .catch(err => {
