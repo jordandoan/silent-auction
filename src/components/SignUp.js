@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 function Copyright() {
   return (
@@ -49,12 +51,55 @@ const useStyles = makeStyles(theme => ({
 export default function SignUp() {
   const classes = useStyles();
   const [fields, setFields] = useState({first_name: "", last_name: "", username: "", password: "", is_seller: false})
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({username: false, password: false, first_name: false, last_name: false});
+  const [errMsg, setMsg] = useState("");
 
   const handleChange = e => {
     if (e.target.name === "is_seller") {
       setFields({...fields, is_seller: !fields.is_seller})
     } else {
       setFields({...fields, [e.target.name]: e.target.value})
+    }
+  }
+
+  const validateErrors = () => {
+    let validated = true;
+    let obj = {};
+    for (let key in fields) {
+      if (key !== "is_seller") {
+        if (fields[key].length === 0) {
+          validated = false
+          obj[key] = true;
+        } else {
+          obj[key] = false;
+        }
+      }
+    }
+    setError(obj);
+    return validated
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    let validated = validateErrors();
+    if (validated) { 
+      setLoading(true);
+      axiosWithAuth().post('/api/auth/register', fields)
+        .then(res => {
+          setTimeout( () => {
+            setLoading(false);
+            setMsg("Success!");
+          }, 750)
+        })
+        .catch(err => {
+          setTimeout( () => {
+            setLoading(false);
+            setMsg("Error signing up. Have you tried a different username?");
+          }, 750)
+        })
+    } else {
+      setMsg("Please fill out all fields.");
     }
   }
 
@@ -68,7 +113,8 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onChange={handleChange}>
+        <form className={classes.form} noValidate onChange={handleChange} onSubmit={handleSubmit}>
+          {errMsg && <p>{errMsg}</p>}
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -79,6 +125,7 @@ export default function SignUp() {
                 fullWidth
                 id="firstName"
                 label="First Name"
+                error={error.first_name}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -90,6 +137,7 @@ export default function SignUp() {
                 label="Last Name"
                 name="last_name"
                 autoComplete="lname"
+                error={error.last_name}
               />
             </Grid>
             <Grid item xs={12}>
@@ -100,7 +148,7 @@ export default function SignUp() {
                 id="username"
                 label="Username"
                 name="username"
-                // autoComplete="email"
+                error={error.username}
               />
             </Grid>
             <Grid item xs={12}>
@@ -113,16 +161,17 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                error={error.password}
               />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox color="primary" name="is_seller" checked={fields.is_seller}/>}
                 label="Do you want to be a seller?"
-
               />
             </Grid>
           </Grid>
+          {loading && <LinearProgress color="secondary"/>}
           <Button
             type="submit"
             fullWidth

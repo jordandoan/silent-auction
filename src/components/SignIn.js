@@ -53,6 +53,7 @@ export default function SignIn() {
   const [fields, setFields] = useState({username: "", password: ""});
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState({username: false, password: false});
+  const [errMsg, setMsg] = useState("");
 
   const handleChange = e => {
     setFields({...fields, [e.target.name]: e.target.value})
@@ -80,11 +81,19 @@ export default function SignIn() {
       setLoading(true);
       axiosWithAuth().post('/api/auth/login', fields)
         .then(res => {
-          setLoading(false);
+          setTimeout( () => {
+            setLoading(false);
+            setMsg("Success!");
+          }, 750)
         })
         .catch(err => {
-          setLoading(false);
+          setTimeout( () => {
+            setLoading(false);
+            setMsg("Incorrect credentials");
+          }, 750)
         })
+    } else {
+      setMsg("Please fill out all fields.");
     }
   }
 
@@ -99,7 +108,7 @@ export default function SignIn() {
           Sign in
         </Typography>
         <form className={classes.form} noValidate onChange={handleChange} onSubmit={handleSubmit}>
-          {loading && <LinearProgress color="secondary"/>}
+          {errMsg && <p>{errMsg}</p>}
           <TextField
             variant="outlined"
             margin="normal"
@@ -122,6 +131,7 @@ export default function SignIn() {
             autoComplete="current-password"
             error={error.password}
           />
+          {loading && <LinearProgress color="secondary"/>}
           <Button
             type="submit"
             fullWidth
