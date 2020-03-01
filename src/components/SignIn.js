@@ -76,7 +76,6 @@ export default function SignIn() {
   const handleSubmit = e => {
     e.preventDefault();
     let validated = validateErrors();
-    console.log(validated);
     if (validated) { 
       setLoading(true);
       axiosWithAuth().post('/api/auth/login', fields)
