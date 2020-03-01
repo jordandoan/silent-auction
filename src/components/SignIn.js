@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import UserContext from '../contexts/UserContext';
 
 function Copyright() {
   return (
@@ -54,6 +55,7 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState({username: false, password: false});
   const [errMsg, setMsg] = useState("");
+  const User = useContext(UserContext);
 
   const handleChange = e => {
     setFields({...fields, [e.target.name]: e.target.value})
@@ -84,6 +86,7 @@ export default function SignIn() {
           setTimeout( () => {
             setLoading(false);
             setMsg("Success!");
+            User.setToken(res.data.token);
           }, 750)
         })
         .catch(err => {
