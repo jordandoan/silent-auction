@@ -6,6 +6,7 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Test from './components/Test';
 import UserContext from './contexts/UserContext';
+import RedirectAuthRoute from './utils/RedirectAuthRoute';
 
 
 function App() {
@@ -13,8 +14,8 @@ function App() {
   return (
     <UserContext.Provider value={{token, setToken}}>
       <div className="App">
-        <Route path="/signin" component={SignIn} />
-        <Route path="/signup" component={SignUp} />
+        <RedirectAuthRoute path="/signin" component={SignIn} />
+        <RedirectAuthRoute path="/signup" component={SignUp} />
         <Route path="/" component={Test} />
       </div>
     </UserContext.Provider>
