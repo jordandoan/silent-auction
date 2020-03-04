@@ -9,8 +9,7 @@ import SignUp from './components/SignUp';
 
 import UserContext from './contexts/UserContext';
 import RedirectAuthRoute from './utils/RedirectAuthRoute';
-
-
+import Auctions from './components/Auctions';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -18,6 +17,7 @@ function App() {
     <UserContext.Provider value={{token, setToken}}>
       <div className="App">
         <NavBar />
+        <Auctions />
         <RedirectAuthRoute path="/signin" component={SignIn} />
         <RedirectAuthRoute path="/signup" component={SignUp} />
       </div>
