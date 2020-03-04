@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -6,13 +6,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-
+import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+
+import UserContext from '../contexts/UserContext';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -77,9 +79,17 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
+  button: {
+    marginRight: '10px',
+    background: 'white',
+    '&:hover': {
+      background: 'lightgray',
+    }
+  }
 }));
 
 export default function NavBar() {
+  const User = useContext(UserContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -158,7 +168,7 @@ export default function NavBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} onClick={() => {history.push('/')}}>
+          <Typography className={classes.title} variant="h6" onClick={() => {history.push('/')}}>
             SILENT AUCTION
           </Typography>
           <div className={classes.search}>
@@ -175,18 +185,30 @@ export default function NavBar() {
             />
           </div>
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
+          {!User.token && 
+            <div>
+              <Button className={classes.button} variant="outlined" onClick={() => {history.push('/signup')}}>
+                Sign Up
+              </Button>
+              <Button className={classes.button} variant="outlined" onClick={() => {history.push('/signin')}}>
+                Sign In
+              </Button>
+            </div>
+          }
+          {User.token && 
+            <div className={classes.sectionDesktop}>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </div>
+          }
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
