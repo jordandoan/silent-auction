@@ -24,7 +24,6 @@ const Auctions = (props) => {
         console.log(err);
       });
   }, [])
-  console.log(data);
   const auctions = [{
     name: "Iphone"
   },

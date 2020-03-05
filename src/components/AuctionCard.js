@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -21,8 +22,9 @@ const useStyles = makeStyles({
 });
 
 export default function MediaCard({ auction }) {
+  const history = useHistory();
   const classes = useStyles();
-  console.log(auction);
+
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -45,7 +47,7 @@ export default function MediaCard({ auction }) {
         <Button size="small" color="primary">
           Share
         </Button>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={() => {history.push(`/auctions/auction/${auction.id}`)}}>
           Learn More
         </Button>
       </CardActions>
