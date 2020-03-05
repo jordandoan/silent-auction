@@ -23,7 +23,7 @@ const DetailedAuction = ({ history, match, location}) => {
         arr[1] = formatDistanceToNow(end);
         setTime(arr);
       })
-  }, [])
+  }, [match.params.id])
 
   return (
     <Container>

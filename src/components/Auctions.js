@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Button } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 import AuctionCard from './AuctionCard';
 
@@ -8,6 +9,7 @@ import { axiosWithAuth } from '../utils/axiosWithAuth';
 import styles from './Auctions.module.scss';
 
 const Auctions = (props) => {
+  const history = useHistory();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -24,19 +26,19 @@ const Auctions = (props) => {
         console.log(err);
       });
   }, [])
-  const auctions = [{
-    name: "Iphone"
-  },
-  {
-    name:"Android phone"
-  }
-]
+
   if (loading) return <CircularProgress />
+
   return (
-    <div className={styles.container}>
-      {data.map(auction => 
-        <AuctionCard auction={auction} />  
-      )}
+    <div>
+      <Button variant="contained" onClick={() =>{history.push('/auctions/add')}}>
+        Add Item
+      </Button>
+      <div className={styles.container}>
+        {data.map(auction => 
+          <AuctionCard auction={auction} />  
+        )}
+      </div>
     </div>
   )
 }
