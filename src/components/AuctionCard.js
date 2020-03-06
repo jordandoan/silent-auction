@@ -36,7 +36,6 @@ export default function MediaCard({ auction }) {
   const history = useHistory();
   const classes = useStyles();
   const timeLeft = formatDistanceToNow(new Date(auction.date_ending));
-  console.log(auction);
   return (
     <Card className={classes.root}>
       <CardContent className={classes.header}>
