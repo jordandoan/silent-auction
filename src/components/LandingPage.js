@@ -6,10 +6,10 @@ const LandingPage = () => {
   return (
     <>
       <Typography variant="h1">
-        Silent Auction. 
+        Silent Auction.
       </Typography>
-      <Typography variant="h3">
-        Sell. Bid. Win.
+      <Typography variant="h5">
+        Be a buyer or a seller. 
       </Typography>
     </>
   )

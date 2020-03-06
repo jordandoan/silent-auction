@@ -36,14 +36,25 @@ export default function NavBar() {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
+  const handleMenuClose = (isDashboard) => {
     setAnchorEl(null);
+    if (isDashboard) {
+      history.push('/dashboard');
+    } 
     handleMobileMenuClose();
   };
 
   const handleMobileMenuOpen = event => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const logout = () => {
+    localStorage.clear();
+    User.setToken(null)
+    history.push('/');
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -56,8 +67,9 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(true)}}>Dashboard</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(false)}}>My account</MenuItem>
+      <MenuItem onClick={logout}>Log out</MenuItem>
     </Menu>
   );
 
@@ -81,7 +93,7 @@ export default function NavBar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Dashboard</p>
       </MenuItem>
     </Menu>
   );
@@ -101,7 +113,7 @@ export default function NavBar() {
           <Typography className={classes.title} variant="h6" onClick={() => {history.push('/')}}>
             SILENT AUCTION
           </Typography>
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -113,7 +125,7 @@ export default function NavBar() {
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
-          </div>
+          </div> */}
           <div className={classes.grow} />
           <Button className={classes.button} variant="outlined" onClick={() => {history.push('/auctions')}}>
                 Auctions
