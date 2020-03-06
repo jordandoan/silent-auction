@@ -31,9 +31,6 @@ const Auctions = (props) => {
 
   return (
     <div>
-      <Button variant="contained" onClick={() =>{history.push('/auctions/add')}}>
-        Add Item
-      </Button>
       <div className={styles.container}>
         {data.map(auction => 
           <AuctionCard auction={auction} />  

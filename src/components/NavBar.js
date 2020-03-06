@@ -115,6 +115,9 @@ export default function NavBar() {
             />
           </div>
           <div className={classes.grow} />
+          <Button className={classes.button} variant="outlined" onClick={() => {history.push('/auctions')}}>
+                Auctions
+          </Button>
           {!User.token && 
             <div>
               <Button className={classes.button} variant="outlined" onClick={() => {history.push('/signup')}}>
@@ -125,19 +128,24 @@ export default function NavBar() {
               </Button>
             </div>
           }
-          {User.token && 
-            <div className={classes.sectionDesktop}>
-              <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            </div>
+          {User.token &&
+            <>
+              <Button className={classes.button} variant="outlined" onClick={() =>{history.push('/auctions/add')}}>
+                Add Item
+              </Button>
+              <div className={classes.sectionDesktop}>
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </div>
+            </>
           }
           <div className={classes.sectionMobile}>
             <IconButton
