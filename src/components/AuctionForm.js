@@ -1,6 +1,6 @@
 import 'date-fns';
-import React from 'react';
-import { Grid, FormControl, InputLabel, Input, TextField } from '@material-ui/core/';
+import React, { useState } from 'react';
+import { Grid, Button, TextField } from '@material-ui/core/';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -8,33 +8,55 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+
 const AuctionForm = () => {
-  const [startDate, setStart] = React.useState(new Date());
-  const [endDate, setEnd] = React.useState(new Date().setDate(new Date().getDay() + 8))
+  const [startDate, setStart] = useState(new Date());
+  const [endDate, setEnd] = useState(new Date(new Date().setDate(new Date().getDay() + 8)));
+  const [fields, setFields] = useState({name: "", description: "", starting_price: 0, image: ""});
   const handleDateChange = date => {
     setStart(date);
   };
 
+  const handleEndChange = date => {
+    setEnd(date);
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setFields({...fields, [e.target.name]: e.target.value});
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let postData = {...fields, date_ending: endDate.toISOString(), date_starting: startDate.toISOString()};
+    axiosWithAuth().post('/api/auctions', postData)
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err.message);
+      })
+  }
+
   return (
     <div>
-      <Grid container justify="center" direction="column" spacing={3}>
-        <Grid item> 
-          <TextField variant="outlined" label="Title"placeholder="iPhone SE"/>
-
+      <form onChange={handleChange}>
+        <Grid container justify="center" direction="column" spacing={3}>
+          <Grid item> 
+            <TextField required variant="outlined" label="Title"placeholder="iPhone SE" name="name"/>
+          </Grid>
+          <Grid item>
+            <TextField required type="number" variant="outlined" label="Price" placeholder={"150"}  name="starting_price"/>
+          </Grid>
+          <Grid item>
+            <TextField multiline={true} variant="outlined" label="Description" placeholder="A beautiful iPhone!"  name="description"/>
+          </Grid>
+          <Grid item>
+            <TextField required variant="outlined" label="Image URL" placeholder="https://...."  name="image"/>
+          </Grid>
         </Grid>
-        <Grid item>
-          <TextField type="number" variant="outlined" label="Price" placeholder={150} />
-
-        </Grid>
-        <Grid item>
-          <TextField multiline={true} variant="outlined" label="Description" placeholder="A beautiful iPhone!"/>
-
-        </Grid>
-        <Grid item>
-          <TextField variant="outlined" label="Image URL" placeholder="https://...."/>
-
-        </Grid>
-      </Grid>
+      </form>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Grid container justify="center" spacing={2}>
           <Grid item xs={2}>
@@ -43,7 +65,6 @@ const AuctionForm = () => {
               variant="inline"
               format="MM/dd/yyyy"
               margin="normal"
-              id="date-picker-inline"
               label="Start date"
               value={startDate}
               onChange={handleDateChange}
@@ -52,10 +73,9 @@ const AuctionForm = () => {
               }}
             />
           </Grid>
-          <Grid item spacing={2} xs={2}>
+          <Grid item xs={2}>
             <KeyboardTimePicker
               margin="normal"
-              id="time-picker"
               label="Start time"
               value={startDate}
               onChange={handleDateChange}
@@ -75,10 +95,9 @@ const AuctionForm = () => {
               variant="inline"
               format="MM/dd/yyyy"
               margin="normal"
-              id="date-picker-inline"
               label="End date"
               value={endDate}
-              onChange={handleDateChange}
+              onChange={handleEndChange}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }}
@@ -87,10 +106,9 @@ const AuctionForm = () => {
           <Grid item xs={2}>
             <KeyboardTimePicker
               margin="normal"
-              id="time-picker"
               label="End time"
               value={endDate}
-              onChange={handleDateChange}
+              onChange={handleEndChange}
               KeyboardButtonProps={{
                 'aria-label': 'change time',
               }}
@@ -98,6 +116,9 @@ const AuctionForm = () => {
           </Grid>
         </Grid>
       </MuiPickersUtilsProvider>
+      <Button variant="contained" color="primary" onClick={handleSubmit}>
+        Submit
+      </Button>
     </div>
   )
 }

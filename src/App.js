@@ -9,6 +9,7 @@ import SignUp from './components/SignUp';
 
 import UserContext from './contexts/UserContext';
 import RedirectAuthRoute from './utils/RedirectAuthRoute';
+import PrivateRoute from './utils/PrivateRoute';
 import Auctions from './components/Auctions';
 import DetailedAuction from './components/DetailedAuction';
 import AuctionForm from './components/AuctionForm';
@@ -25,7 +26,7 @@ function App() {
         <RedirectAuthRoute path="/signup" component={SignUp} />
         <Route exact path="/auctions" component={Auctions} />
         <Route path="/auctions/auction/:id" component={DetailedAuction} />
-        <Route path="/auctions/add" component={AuctionForm} />
+        <PrivateRoute path="/auctions/add" component={AuctionForm} />
       </div>
     </UserContext.Provider>
   );
