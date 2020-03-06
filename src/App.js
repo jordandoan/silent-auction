@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useContext } from 'react';
+import 'typeface-roboto';
 import './App.css';
+import { Route } from 'react-router-dom';
+
+import NavBar from './components/NavBar';
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
+
+import UserContext from './contexts/UserContext';
+import RedirectAuthRoute from './utils/RedirectAuthRoute';
+import PrivateRoute from './utils/PrivateRoute';
+
+import LandingPage from './components/LandingPage';
+import Auctions from './components/Auctions';
+import DetailedAuction from './components/DetailedAuction';
+import AuctionForm from './components/AuctionForm';
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("token"));
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={{token, setToken}}>
+      <div className="App">
+        <NavBar />
+        <Route exact path ="/" component={LandingPage} />
+        <RedirectAuthRoute path="/signin" component={SignIn} />
+        <RedirectAuthRoute path="/signup" component={SignUp} />
+        <Route exact path="/auctions" component={Auctions} />
+        <Route path="/auctions/auction/:id" component={DetailedAuction} />
+        <PrivateRoute path="/auctions/add" component={AuctionForm} />
+      </div>
+    </UserContext.Provider>
   );
 }
 
