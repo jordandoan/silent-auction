@@ -12,7 +12,7 @@ import {
 import styles from './AuctionForm.module.scss';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-const AuctionForm = ({ width }) => {
+const AuctionForm = ({ width, history }) => {
   const [startDate, setStart] = useState(new Date());
   const [endDate, setEnd] = useState(new Date(new Date().setDate(new Date().getDate() + 7)));
   const [fields, setFields] = useState({name: "", description: "", starting_price: 0, image: ""});

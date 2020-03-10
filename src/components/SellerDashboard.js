@@ -16,11 +16,8 @@ const SellerDashboard = ({ data }) => {
     })
     setAuctions({ongoing, past});
   }, [])
-
-  console.log(auctions);
   return (
     <div>
-      Seller
       <div>
         Ongoing auctions
         {auctions.ongoing.map(auction => <AuctionCard auction={auction} />)}

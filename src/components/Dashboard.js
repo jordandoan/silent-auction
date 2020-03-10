@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+import Typography from '@material-ui/core/Typography';
 
 import UserContext from '../contexts/UserContext';
 import BuyerDashboard from './BuyerDashboard';
 import SellerDashboard from './SellerDashboard';
+
+
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+import styles from './Dashboard.module.scss';
 
 const Dashboard = () => {
   const [data, setData] = useState();
@@ -25,8 +29,10 @@ const Dashboard = () => {
 
   if (!data) return <div>Loading...</div>
   return (
-    <div>
-      Welcome, {data.first_name} {data.last_name} ({User.token && (User.is_seller ? "Seller" : "Buyer")})
+    <div className={styles.main}>
+      <Typography variant="h5">
+        Welcome, {data.first_name} {data.last_name} ({User.token && (User.is_seller ? "Seller" : "Buyer")})
+      </Typography>
       {User.is_seller && <SellerDashboard data={data} />}
       {!User.is_seller && <BuyerDashboard data={data} />}
     </div>
