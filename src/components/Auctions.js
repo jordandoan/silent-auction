@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Switch from '@material-ui/core/Switch';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
 import isFuture from 'date-fns/isFuture';
-import Button from '@material-ui/core/Button';
 
 import { useHistory } from 'react-router-dom';
 
@@ -17,7 +20,10 @@ const Auctions = (props) => {
   const [current, setCurrent] = useState([]);
   const [viewAll, setView] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  
+  const handleSlider = () => {
+    setView(!viewAll);
+  }
   useEffect(() => {
     setLoading(true);
     axiosWithAuth().get('/api/auctions')
@@ -40,6 +46,7 @@ const Auctions = (props) => {
 
   return (
     <div>
+      <Grid></Grid>
       <div className={styles.container}>
         {
           viewAll 
@@ -47,6 +54,24 @@ const Auctions = (props) => {
             : current.map(auction => <AuctionCard auction={auction} />)
         }
       </div>
+      <Grid container>
+        <Grid item>
+          <Typography>
+            View All
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Switch 
+            checked={!viewAll} 
+            onChange={handleSlider}
+          />
+        </Grid>
+        <Grid item>
+          <Typography>
+            View current
+          </Typography>
+        </Grid>
+      </Grid>
     </div>
   )
 }
