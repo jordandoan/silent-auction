@@ -85,6 +85,7 @@ export default function SignIn(props) {
       axiosWithAuth().post('/api/auth/login', fields)
         .then(res => {
           setTimeout( () => {
+            console.log(res);
             setLoading(false);
             setMsg("Success!");
             User.setToken(res.data.token);

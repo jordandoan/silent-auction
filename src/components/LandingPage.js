@@ -9,7 +9,7 @@ const LandingPage = () => {
         Silent Auction.
       </Typography>
       <Typography variant="h5">
-        Be a buyer or a seller. 
+        Sell. Or Buy.
       </Typography>
     </>
   )
