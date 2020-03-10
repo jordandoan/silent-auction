@@ -1,6 +1,7 @@
 import 'date-fns';
 import React, { useState } from 'react';
-import { Grid, Button, TextField } from '@material-ui/core/';
+import { Grid, Button, TextField, Typography } from '@material-ui/core/';
+import withWidth from '@material-ui/core/withWidth';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -8,12 +9,21 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
+import styles from './AuctionForm.module.scss';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-const AuctionForm = () => {
+const AuctionForm = ({ width }) => {
   const [startDate, setStart] = useState(new Date());
-  const [endDate, setEnd] = useState(new Date(new Date().setDate(new Date().getDay() + 8)));
+  const [endDate, setEnd] = useState(new Date(new Date().setDate(new Date().getDate() + 7)));
   const [fields, setFields] = useState({name: "", description: "", starting_price: 0, image: ""});
+  const isSmallScreen = /xs|sm/.test(width);
+
+  const buttonProps = {
+    variant: "contained",
+    color: "primary",
+    className: isSmallScreen? styles['button-small'] : styles.button, 
+  }
+
   const handleDateChange = date => {
     setStart(date);
   };
@@ -40,26 +50,29 @@ const AuctionForm = () => {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
+      <Typography variant="h3">
+        Sell Item
+      </Typography>
       <form onChange={handleChange}>
         <Grid container justify="center" direction="column" spacing={3}>
           <Grid item> 
-            <TextField required variant="outlined" label="Title"placeholder="iPhone SE" name="name"/>
+            <TextField  className={styles.input} required variant="outlined" label="Title"placeholder="iPhone SE" name="name"/>
           </Grid>
           <Grid item>
-            <TextField required type="number" variant="outlined" label="Price" placeholder={"150"}  name="starting_price"/>
+            <TextField  className={styles.input} required type="number" variant="outlined" label="Price" placeholder={"150"}  name="starting_price"/>
           </Grid>
           <Grid item>
-            <TextField multiline={true} variant="outlined" label="Description" placeholder="A beautiful iPhone!"  name="description"/>
+            <TextField  className={styles.input} multiline={true} variant="outlined" label="Description" placeholder="A beautiful iPhone!"  name="description"/>
           </Grid>
           <Grid item>
-            <TextField required variant="outlined" label="Image URL" placeholder="https://...."  name="image"/>
+            <TextField  className={styles.input} required variant="outlined" label="Image URL" placeholder="https://...."  name="image"/>
           </Grid>
         </Grid>
       </form>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Grid container justify="center" spacing={2}>
-          <Grid item xs={2}>
+          <Grid item xs={12} lg={2}>
             <KeyboardDatePicker
               disableToolbar
               variant="inline"
@@ -73,7 +86,7 @@ const AuctionForm = () => {
               }}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={12} lg={2}>
             <KeyboardTimePicker
               margin="normal"
               label="Start time"
@@ -89,7 +102,7 @@ const AuctionForm = () => {
       </MuiPickersUtilsProvider>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Grid container justify="center" spacing={2}>
-          <Grid item xs={2}>
+          <Grid item xs={12} lg={2}>
             <KeyboardDatePicker
               disableToolbar
               variant="inline"
@@ -103,7 +116,7 @@ const AuctionForm = () => {
               }}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={12} lg={2}>
             <KeyboardTimePicker
               margin="normal"
               label="End time"
@@ -116,11 +129,11 @@ const AuctionForm = () => {
           </Grid>
         </Grid>
       </MuiPickersUtilsProvider>
-      <Button variant="contained" color="primary" onClick={handleSubmit}>
+      <Button {...buttonProps} onClick={handleSubmit}>
         Submit
       </Button>
     </div>
   )
 }
 
-export default AuctionForm;
+export default withWidth()(AuctionForm);

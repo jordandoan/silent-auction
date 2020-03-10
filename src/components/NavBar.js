@@ -65,7 +65,7 @@ export default function NavBar() {
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
-      onClose={handleMenuClose}
+      onClose={() => handleMenuClose(false)}
     >
       <MenuItem onClick={() => {handleMenuClose(true)}}>Dashboard</MenuItem>
       <MenuItem onClick={() => {handleMenuClose(false)}}>My account</MenuItem>

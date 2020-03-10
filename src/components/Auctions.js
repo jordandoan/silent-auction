@@ -55,6 +55,7 @@ const Auctions = (props) => {
         </Grid>
         <Grid item>
           <Switch 
+            color="primary"
             checked={!viewAll} 
             onChange={handleSlider}
           />
