@@ -142,9 +142,9 @@ export default function NavBar() {
           }
           {User.token &&
             <>
-              <Button className={classes.button} variant="outlined" onClick={() =>{history.push('/auctions/add')}}>
+              {User.is_seller && <Button className={classes.button} variant="outlined" onClick={() =>{history.push('/auctions/add')}}>
                 Add Item
-              </Button>
+              </Button>}
               <div className={classes.sectionDesktop}>
                 <IconButton
                   edge="end"

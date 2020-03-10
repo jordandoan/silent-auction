@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { CircularProgress, Button } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import isFuture from 'date-fns/isFuture';
+import Button from '@material-ui/core/Button';
+
 import { useHistory } from 'react-router-dom';
 
 import AuctionCard from './AuctionCard';
@@ -11,6 +14,8 @@ import styles from './Auctions.module.scss';
 const Auctions = (props) => {
   const history = useHistory();
   const [data, setData] = useState([]);
+  const [current, setCurrent] = useState([]);
+  const [viewAll, setView] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -20,6 +25,10 @@ const Auctions = (props) => {
         setTimeout(() =>{
           setData(res.data);
           setLoading(false);
+          const filtered = res.data.filter(auction =>
+            isFuture(new Date(auction.date_ending))
+          )
+          setCurrent(filtered);
         }, 750)
       })
       .catch(err => {
@@ -32,9 +41,11 @@ const Auctions = (props) => {
   return (
     <div>
       <div className={styles.container}>
-        {data.map(auction => 
-          <AuctionCard auction={auction} />  
-        )}
+        {
+          viewAll 
+            ? data.map(auction => <AuctionCard auction={auction} />) 
+            : current.map(auction => <AuctionCard auction={auction} />)
+        }
       </div>
     </div>
   )
