@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
@@ -13,12 +14,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import withWidth from '@material-ui/core/withWidth';
 
 import UserContext from '../contexts/UserContext';
 import useStyles from './NavBarStyles';
 
+import styles from './NavBar.module.scss';
 
-export default function NavBar() {
+export default withWidth()(function NavBar({ width }) {
+  const isSmallScreen = /xs|sm/.test(width);
+  const className = {
+    className: isSmallScreen ? styles['main-small'] : styles.main, 
+  }
   const User = useContext(UserContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -84,32 +91,16 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Dashboard</p>
-      </MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(true)}}>Dashboard</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(false)}}>My account</MenuItem>
+      <MenuItem onClick={logout}>Log out</MenuItem>
     </Menu>
   );
 
   return (
-    <div className={classes.grow}>
+    <div>
       <AppBar position="static" className={classes.app}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
+        <Toolbar className={isSmallScreen ? styles['main-small'] : styles.main}>
           <Typography className={classes.title} variant="h6" onClick={() => {history.push('/')}}>
             SILENT AUCTION
           </Typography>
@@ -131,7 +122,7 @@ export default function NavBar() {
                 Auctions
           </Button>
           {!User.token && 
-            <div>
+            <div className={isSmallScreen ? styles['main-small'] : styles.main}>
               <Button className={classes.button} variant="outlined" onClick={() => {history.push('/signup')}}>
                 Sign Up
               </Button>
@@ -167,14 +158,15 @@ export default function NavBar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <MenuIcon />
             </IconButton>
           </div>
         </Toolbar>
+
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
     </div>
   );
-}
+})
  

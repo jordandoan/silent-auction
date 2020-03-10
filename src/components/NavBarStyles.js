@@ -64,7 +64,10 @@ const useStyles = makeStyles(theme => ({
     },
   },
   button: {
+    marginTop: '5px',
+    marginBottom: '5px',
     marginRight: '10px',
+    width: '100px',
     background: 'white',
     '&:hover': {
       background: 'lightgray',
