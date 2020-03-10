@@ -64,9 +64,9 @@ export default function MediaCard({ auction }) {
         <Button size="small" color="primary" onClick={() => {history.push(`/auctions/auction/${auction.id}`)}}>
           View Item
         </Button>
-        <Button size="small" disabled>
+        {auction.seller && <Button size="small" disabled>
           <PersonIcon fontSize="small"/> {auction.seller}
-        </Button>
+        </Button>}
       </CardActions>
 
     </Card>

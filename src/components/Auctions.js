@@ -47,14 +47,6 @@ const Auctions = (props) => {
 
   return (
     <div>
-      <Grid></Grid>
-      <div className={styles.container}>
-        {
-          viewAll 
-            ? data.map(auction => <AuctionCard auction={auction} />) 
-            : current.map(auction => <AuctionCard auction={auction} />)
-        }
-      </div>
       <Grid container>
         <Grid item>
           <Typography>
@@ -73,6 +65,13 @@ const Auctions = (props) => {
           </Typography>
         </Grid>
       </Grid>
+      <div className={styles.container}>
+        {
+          viewAll 
+            ? data.map(auction => <AuctionCard auction={auction} />) 
+            : current.map(auction => <AuctionCard auction={auction} />)
+        }
+      </div>
     </div>
   )
 }
