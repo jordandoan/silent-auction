@@ -19,9 +19,10 @@ import Dashboard from './components/Dashboard';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [is_seller, setRole] = useState(localStorage.getItem("is_seller"));
   const User = useContext(UserContext);
   return (
-    <UserContext.Provider value={{...User, token, setToken}}>
+    <UserContext.Provider value={{...User, token, setToken, is_seller, setRole}}>
       <div className="App">
         <NavBar />
         <Route exact path ="/" component={LandingPage} />

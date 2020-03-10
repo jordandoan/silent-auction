@@ -20,10 +20,11 @@ const Auctions = (props) => {
   const [current, setCurrent] = useState([]);
   const [viewAll, setView] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+
   const handleSlider = () => {
     setView(!viewAll);
   }
+  
   useEffect(() => {
     setLoading(true);
     axiosWithAuth().get('/api/auctions')
