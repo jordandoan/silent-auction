@@ -46,7 +46,7 @@ const Auctions = (props) => {
   if (loading) return <CircularProgress />
 
   return (
-    <div>
+    <div className={styles.main}>
       <Grid container>
         <Grid item>
           <Typography>
@@ -66,13 +66,14 @@ const Auctions = (props) => {
           </Typography>
         </Grid>
       </Grid>
-      <div className={styles.container}>
+      <Grid container spacing={7}>
         {
           viewAll 
             ? data.map(auction => <AuctionCard auction={auction} />) 
             : current.map(auction => <AuctionCard auction={auction} />)
         }
-      </div>
+
+      </Grid>
     </div>
   )
 }
