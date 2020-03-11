@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
@@ -13,12 +14,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import withWidth from '@material-ui/core/withWidth';
 
 import UserContext from '../contexts/UserContext';
 import useStyles from './NavBarStyles';
 
+import styles from './NavBar.module.scss';
 
-export default function NavBar() {
+export default withWidth()(function NavBar({ width }) {
+  const isSmallScreen = /xs|sm/.test(width);
+  const className = {
+    className: isSmallScreen ? styles['main-small'] : styles.main, 
+  }
   const User = useContext(UserContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,14 +43,25 @@ export default function NavBar() {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
+  const handleMenuClose = (isDashboard) => {
     setAnchorEl(null);
+    if (isDashboard) {
+      history.push('/dashboard');
+    } 
     handleMobileMenuClose();
   };
 
   const handleMobileMenuOpen = event => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const logout = () => {
+    localStorage.clear();
+    User.setToken(null)
+    history.push('/');
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -54,10 +72,11 @@ export default function NavBar() {
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
-      onClose={handleMenuClose}
+      onClose={() => handleMenuClose(false)}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(true)}}>Dashboard</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(false)}}>My account</MenuItem>
+      <MenuItem onClick={logout}>Log out</MenuItem>
     </Menu>
   );
 
@@ -72,36 +91,20 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(true)}}>Dashboard</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(false)}}>My account</MenuItem>
+      <MenuItem onClick={logout}>Log out</MenuItem>
     </Menu>
   );
 
   return (
-    <div className={classes.grow}>
+    <div>
       <AppBar position="static" className={classes.app}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
+        <Toolbar className={isSmallScreen ? styles['main-small'] : styles.main}>
           <Typography className={classes.title} variant="h6" onClick={() => {history.push('/')}}>
             SILENT AUCTION
           </Typography>
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -113,13 +116,13 @@ export default function NavBar() {
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
-          </div>
+          </div> */}
           <div className={classes.grow} />
           <Button className={classes.button} variant="outlined" onClick={() => {history.push('/auctions')}}>
                 Auctions
           </Button>
           {!User.token && 
-            <div>
+            <div className={isSmallScreen ? styles['main-small'] : styles.main}>
               <Button className={classes.button} variant="outlined" onClick={() => {history.push('/signup')}}>
                 Sign Up
               </Button>
@@ -130,9 +133,9 @@ export default function NavBar() {
           }
           {User.token &&
             <>
-              <Button className={classes.button} variant="outlined" onClick={() =>{history.push('/auctions/add')}}>
+              {User.is_seller && <Button className={classes.button} variant="outlined" onClick={() =>{history.push('/auctions/add')}}>
                 Add Item
-              </Button>
+              </Button>}
               <div className={classes.sectionDesktop}>
                 <IconButton
                   edge="end"
@@ -155,14 +158,15 @@ export default function NavBar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <MenuIcon />
             </IconButton>
           </div>
         </Toolbar>
+
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
     </div>
   );
-}
+})
  

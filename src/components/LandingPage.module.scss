@@ -1,0 +1,16 @@
+.container {
+  margin: 3% 0;
+  background-color: white;
+  padding: 2.4% 0;
+}
+
+.image {
+  position: fixed;
+  left: 0%;
+  top:-50%;
+  z-index: -1;
+  object-fit: cover;
+  max-width: 100%;
+  min-height: 150%;
+  height: auto;
+}

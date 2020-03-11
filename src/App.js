@@ -15,11 +15,14 @@ import LandingPage from './components/LandingPage';
 import Auctions from './components/Auctions';
 import DetailedAuction from './components/DetailedAuction';
 import AuctionForm from './components/AuctionForm';
+import Dashboard from './components/Dashboard';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [is_seller, setRole] = useState(localStorage.getItem("is_seller"));
+  const User = useContext(UserContext);
   return (
-    <UserContext.Provider value={{token, setToken}}>
+    <UserContext.Provider value={{...User, token, setToken, is_seller, setRole}}>
       <div className="App">
         <NavBar />
         <Route exact path ="/" component={LandingPage} />
@@ -28,6 +31,7 @@ function App() {
         <Route exact path="/auctions" component={Auctions} />
         <Route path="/auctions/auction/:id" component={DetailedAuction} />
         <PrivateRoute path="/auctions/add" component={AuctionForm} />
+        <PrivateRoute path="/dashboard" component={Dashboard} />
       </div>
     </UserContext.Provider>
   );
