@@ -55,14 +55,14 @@ const AuctionForm = ({ width, history }) => {
         setMessage("Auction added.")
       })
       .catch(err => {
-        setLoading(false);
-        // alert(err.response.data.message);
+        setOpen(false);
+        alert(err.response.data.message);
       })
   }
 
   return (
     <div className={styles.container}>
-      <Success loading={loading} open={open} url={"/auctions"}>
+      <Success setOpen={setOpen} loading={loading} open={open} url={"/auctions"}>
         {message}
       </Success>
       <Typography variant="h3">

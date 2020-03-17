@@ -26,7 +26,7 @@ function App() {
     <UserContext.Provider value={{...User, token, setToken, is_seller, setRole}}>
       <div className="App">
         <NavBar />
-        {/* <Route exact path ="/" component={LandingPage} /> */}
+        <Route exact path ="/" component={LandingPage} />
         <RedirectAuthRoute path="/signin" component={SignIn} />
         <RedirectAuthRoute path="/signup" component={SignUp} />
         <Route exact path="/auctions" component={Auctions} />

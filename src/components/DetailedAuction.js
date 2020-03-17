@@ -5,13 +5,19 @@ import { Container, Grid, Paper, Button, TextField } from '@material-ui/core/';
 
 import BidInfo from './BidInfo';
 import Byline from './Byline';
+import Success from './Success';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const DetailedAuction = ({ history, match, location}) => {
+  // {history.location.pathname}
   const [auction, setAuction] = useState({});
   const [timeLeft, setTime] = useState([false, 0]);
   const [lastPrice, setPrice] = useState(0);
   const [bidPrice, setBid] = useState(0);
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     axiosWithAuth().get(`api/auctions/${match.params.id}`)
@@ -38,18 +44,24 @@ const DetailedAuction = ({ history, match, location}) => {
   }
 
   const handleSubmit = (e) => {
+    setLoading(true);
+    setOpen(true);
     e.preventDefault();
     axiosWithAuth().post(`/api/bids/${auction.id}`, {price: bidPrice})
       .then(res => {
-        console.log('success');
+        setLoading(false);
       })
       .catch(err => {
+        setOpen(false);
         console.log(err.response);
       })
   }
 
   return (
     <Container>
+      <Success open={open} loading={loading} setOpen={setOpen} url="/auctions">
+        {message}
+      </Success>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <h2>{auction.name}</h2>
