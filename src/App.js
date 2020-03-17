@@ -30,7 +30,8 @@ function App() {
         <RedirectAuthRoute path="/signin" component={SignIn} />
         <RedirectAuthRoute path="/signup" component={SignUp} />
         <Route exact path="/auctions" component={Auctions} />
-        <Route path="/auctions/auction/:id" component={DetailedAuction} />
+        <Route exact path="/auctions/auction/:id" component={DetailedAuction} />
+        <Route exact path="/auctions/auction/:id/edit" component={AuctionForm} />
         <PrivateRoute path="/auctions/add" component={AuctionForm} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
       </div>

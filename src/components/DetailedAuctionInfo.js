@@ -9,6 +9,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import isFuture from 'date-fns/isFuture';
+import EditIcon from '@material-ui/icons/Edit';
 
 import Success from './Success';
 import Byline from './Byline';
@@ -19,11 +21,18 @@ const AuctionInfo = ({ auction, history }) => {
   const username = localStorage.getItem('username');
   const [loading, setLoading] = useState(false);
   const [called, setCalled] = useState(false);
-
+  const owner = username === auction.seller;
   const toggleDialog = () => {
     setOpen(!open);
   }
 
+  const handleEdit = () => {
+    const path = history.location.pathname;
+    history.push({
+      pathname: `${path}/edit`,
+      state: { auction }
+    })
+  }
   const handleDelete = () => {
     setLoading(true);
     setCalled(true);
@@ -66,7 +75,15 @@ const AuctionInfo = ({ auction, history }) => {
       <img style={{width: '30%'}} src={auction.image} />
       <p>{auction.description}</p>
       <p>Sold by <Byline first_name={auction.first_name} username={auction.seller} /></p>
-      {username === auction.seller ? 
+      { owner && isFuture(new Date(auction.date_ending)) && !auction.bids.length ?  
+        <Tooltip title="Edit" onClick={handleEdit}>
+          <IconButton aria-label="delete" color="primary">
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+      : ""
+      }
+      {owner && isFuture(new Date(auction.date_ending)) ? 
         <Tooltip title="Delete">
           <IconButton aria-label="delete" color="secondary" onClick={toggleDialog}>
             <DeleteIcon />
