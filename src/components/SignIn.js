@@ -85,11 +85,11 @@ export default function SignIn(props) {
       axiosWithAuth().post('/api/auth/login', fields)
         .then(res => {
           setTimeout( () => {
-            console.log(res);
             setLoading(false);
             setMsg("Success!");
             User.setToken(res.data.token);
             localStorage.setItem('token', res.data.token);
+            localStorage.setItem('username', fields.username);
             props.history.push("/dashboard");
           }, 750)
         })

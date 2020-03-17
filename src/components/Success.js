@@ -11,7 +11,7 @@ const Success = ({url ="/", loading, open, setOpen, children, ...rest}) => {
 
   useEffect(() => {
     if (open && !loading) {
-      setTimeout(() => handleClose(), 2500)
+      setTimeout(() => handleClose(), 1800)
     }
   }, [open, loading])
 
