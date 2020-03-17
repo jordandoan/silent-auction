@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import UserContext from '../contexts/UserContext';
 import BuyerDashboard from './BuyerDashboard';
 import SellerDashboard from './SellerDashboard';
-
+import Loading from './Loading';
 
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import styles from './Dashboard.module.scss';
@@ -27,7 +27,7 @@ const Dashboard = () => {
       })
   }, [])
 
-  if (!data) return <div>Loading...</div>
+  if (!data) return <Loading> Getting user data... </Loading>
   return (
     <div className={styles.main}>
       <Typography variant="h5">

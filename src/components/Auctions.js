@@ -43,7 +43,7 @@ const Auctions = (props) => {
       });
   }, [])
 
-  if (loading) return <Loading />
+  if (loading) return <Loading>Getting auctions...</Loading>
 
   return (
     <div className={styles.main}>
