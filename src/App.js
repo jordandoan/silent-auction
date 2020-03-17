@@ -16,7 +16,7 @@ import Auctions from './components/Auctions';
 import DetailedAuction from './components/DetailedAuction';
 import AuctionForm from './components/AuctionForm';
 import Dashboard from './components/Dashboard';
-import Success from'./components/Success';
+
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));

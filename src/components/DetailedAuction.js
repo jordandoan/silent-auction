@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import isFuture from 'date-fns/isFuture';
 import { Container, Grid, Paper, Button, TextField } from '@material-ui/core/';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+
 
 import BidInfo from './BidInfo';
 import Byline from './Byline';
 import Success from './Success';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+
 
 const DetailedAuction = ({ history, match, location}) => {
   // {history.location.pathname}
@@ -19,6 +24,8 @@ const DetailedAuction = ({ history, match, location}) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  const username = localStorage.getItem('username');
+  console.log(username);
   useEffect(() => {
     axiosWithAuth().get(`api/auctions/${match.params.id}`)
       .then(res => {
@@ -57,19 +64,32 @@ const DetailedAuction = ({ history, match, location}) => {
       })
   }
 
+  const handleDelete = (e) => {
+
+  }
+  console.log(auction);
   return (
     <Container>
       <Success open={open} loading={loading} setOpen={setOpen} url="/auctions">
         {message}
       </Success>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <h2>{auction.name}</h2>
-          <img style={{width: '30%'}} src={auction.image} />
-          <p>{auction.description}</p>
-          <p>Sold by <Byline first_name={auction.first_name} username={auction.seller} /></p>
+      <Grid container justify="center" spacing={4}>
+        <Grid item xs={8} lg={3}>
+          <Paper>
+            <h2>{auction.name}</h2>
+            <img style={{width: '30%'}} src={auction.image} />
+            <p>{auction.description}</p>
+            <p>Sold by <Byline first_name={auction.first_name} username={auction.seller} /></p>
+            {username === auction.seller ? 
+              <Tooltip title="Delete">
+                <IconButton aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+             : ""}
+          </Paper>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={8} lg={3}>
           <Paper elevation={3}>
             <h3> Info </h3>
             <p>
