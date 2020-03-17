@@ -16,7 +16,7 @@ import Auctions from './components/Auctions';
 import DetailedAuction from './components/DetailedAuction';
 import AuctionForm from './components/AuctionForm';
 import Dashboard from './components/Dashboard';
-import Loading from './components/Loading';
+import Success from'./components/Success';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -26,8 +26,7 @@ function App() {
     <UserContext.Provider value={{...User, token, setToken, is_seller, setRole}}>
       <div className="App">
         <NavBar />
-
-        <Route exact path ="/" component={LandingPage} />
+        {/* <Route exact path ="/" component={LandingPage} /> */}
         <RedirectAuthRoute path="/signin" component={SignIn} />
         <RedirectAuthRoute path="/signup" component={SignUp} />
         <Route exact path="/auctions" component={Auctions} />

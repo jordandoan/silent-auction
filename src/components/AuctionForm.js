@@ -9,12 +9,19 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
+import Success from './Success';
+
 import styles from './AuctionForm.module.scss';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const AuctionForm = ({ width, history }) => {
   const [startDate, setStart] = useState(new Date());
   const [endDate, setEnd] = useState(new Date(new Date().setDate(new Date().getDate() + 7)));
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  
   const [fields, setFields] = useState({name: "", description: "", starting_price: 0, image: ""});
   const isSmallScreen = /xs|sm/.test(width);
 
@@ -38,19 +45,22 @@ const AuctionForm = ({ width, history }) => {
   }
 
   const handleSubmit = (e) => {
+    setOpen(true)
+    setLoading(true);
     e.preventDefault();
     let postData = {...fields, date_ending: endDate.toISOString(), date_starting: startDate.toISOString()};
     axiosWithAuth().post('/api/auctions', postData)
       .then(res => {
-        console.log(res.data);
+        setLoading(false);
       })
       .catch(err => {
-        console.log(err.message);
+        setLoading(false);
       })
   }
 
   return (
     <div className={styles.container}>
+      <Success loading={loading} open={open} />
       <Typography variant="h3">
         Sell Item
       </Typography>
