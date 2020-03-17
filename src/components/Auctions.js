@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -9,6 +8,7 @@ import isFuture from 'date-fns/isFuture';
 import { useHistory } from 'react-router-dom';
 
 import AuctionCard from './AuctionCard';
+import Loading from './Loading';
 
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
@@ -43,7 +43,7 @@ const Auctions = (props) => {
       });
   }, [])
 
-  if (loading) return <CircularProgress />
+  if (loading) return <Loading />
 
   return (
     <div className={styles.main}>
