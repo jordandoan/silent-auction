@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import AuctionCard from './AuctionCard';
+import Grid from '@material-ui/core/Grid';
 import isFuture from 'date-fns/isFuture';
+
+import AuctionCard from './AuctionCard';
+
 const SellerDashboard = ({ data }) => {
   const [auctions, setAuctions] = useState({ongoing: [], past: []})
 
@@ -18,14 +21,14 @@ const SellerDashboard = ({ data }) => {
   }, [])
   return (
     <div>
-      <div>
-        Ongoing auctions
-        {auctions.ongoing.map(auction => <AuctionCard auction={auction} />)}
-      </div>
-      <div>
-        Past auctions
-        {auctions.past.map(auction => <AuctionCard auction={auction} />)}
-      </div>
+        <p>Ongoing auctions</p>
+        <Grid container spacing={7}>
+          {auctions.ongoing.map(auction => <AuctionCard auction={auction} />)}
+        </Grid>
+        <p>Past auctions</p>
+        <Grid container spacing={7}>
+          {auctions.past.map(auction => <AuctionCard auction={auction} />)}
+        </Grid>
     </div>
   )
 }
