@@ -78,15 +78,17 @@ const DetailedAuction = ({ history, match, location}) => {
           <Paper elevation={3}>
             <h3> Info </h3>
             <p>
-              <span>Price:</span>
-              <span>
+              <span>Price: </span>
+              {/* <span>
                 ${`${auction.starting_price} `}
-              </span>
+              </span> */}
               
               <span>
                 ${lastPrice}
-                {timeLeft[0] ? timeLeft[1] : "Auction has ended!"}
               </span>
+              <p>
+                Ends in: {timeLeft[0] ? timeLeft[1] : "Auction has ended!"}
+              </p>
             </p>
             <p>Start date: {new Date(auction.date_starting).toString().substring(0,21)}</p>
             <p>End date: {new Date(auction.date_ending).toString().substring(0,21)}</p>
