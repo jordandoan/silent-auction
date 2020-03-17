@@ -36,7 +36,7 @@ const Auctions = (props) => {
             isFuture(new Date(auction.date_ending))
           )
           setCurrent(filtered);
-        }, 750)
+        }, 1200)
       })
       .catch(err => {
         console.log(err);

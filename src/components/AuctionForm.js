@@ -21,7 +21,7 @@ const AuctionForm = ({ width, history }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  
+
   const [fields, setFields] = useState({name: "", description: "", starting_price: 0, image: ""});
   const isSmallScreen = /xs|sm/.test(width);
 
@@ -52,15 +52,19 @@ const AuctionForm = ({ width, history }) => {
     axiosWithAuth().post('/api/auctions', postData)
       .then(res => {
         setLoading(false);
+        setMessage("Auction added.")
       })
       .catch(err => {
         setLoading(false);
+        // alert(err.response.data.message);
       })
   }
 
   return (
     <div className={styles.container}>
-      <Success loading={loading} open={open} />
+      <Success loading={loading} open={open} url={"/auctions"}>
+        {message}
+      </Success>
       <Typography variant="h3">
         Sell Item
       </Typography>
