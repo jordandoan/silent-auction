@@ -5,11 +5,14 @@ import { Container, Grid, Paper, Button, TextField } from '@material-ui/core/';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-
+import Dialog from '@material-ui/core/Dialog';
 
 import BidInfo from './BidInfo';
-import Byline from './Byline';
+
 import Success from './Success';
+
+import DetailedAuctionInfo from './DetailedAuctionInfo';
+
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 
@@ -24,8 +27,6 @@ const DetailedAuction = ({ history, match, location}) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const username = localStorage.getItem('username');
-  console.log(username);
   useEffect(() => {
     axiosWithAuth().get(`api/auctions/${match.params.id}`)
       .then(res => {
@@ -64,10 +65,6 @@ const DetailedAuction = ({ history, match, location}) => {
       })
   }
 
-  const handleDelete = (e) => {
-
-  }
-  console.log(auction);
   return (
     <Container>
       <Success open={open} loading={loading} setOpen={setOpen} url="/auctions">
@@ -75,19 +72,7 @@ const DetailedAuction = ({ history, match, location}) => {
       </Success>
       <Grid container justify="center" spacing={4}>
         <Grid item xs={8} lg={3}>
-          <Paper>
-            <h2>{auction.name}</h2>
-            <img style={{width: '30%'}} src={auction.image} />
-            <p>{auction.description}</p>
-            <p>Sold by <Byline first_name={auction.first_name} username={auction.seller} /></p>
-            {username === auction.seller ? 
-              <Tooltip title="Delete">
-                <IconButton aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-             : ""}
-          </Paper>
+          <DetailedAuctionInfo auction={auction} history={history} />
         </Grid>
         <Grid item xs={8} lg={3}>
           <Paper elevation={3}>
