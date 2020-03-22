@@ -6,7 +6,7 @@ import styles from './LandingPage.module.scss';
 const LandingPage = () => {
   return (
     <div>
-      <img src={splash} className={styles.image} alt="plant" />
+      <img src={splash} className={styles.image} alt="city picture" />
       <div className={styles.container}>
         <Typography variant="h1">
           Silent Auction.
