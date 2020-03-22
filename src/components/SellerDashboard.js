@@ -23,14 +23,15 @@ const SellerDashboard = ({ width, data }) => {
     })
     setAuctions({ongoing, past});
   }, [])
-  if (isSmallScreen) return <TabsView />
+
+  if (isSmallScreen) return <TabsView auctions={auctions} />
   return (
 
     <div>
         <p>Ongoing auctions</p>
-        <Grid container spacing={7}>
+        {auctions.ongoing.length && <Grid container spacing={7}>
           {auctions.ongoing.map(auction => <AuctionCard auction={auction} />)}
-        </Grid>
+        </Grid>}
         <p>Past auctions</p>
         <Grid container spacing={7}>
           {auctions.past.map(auction => <AuctionCard auction={auction} />)}
