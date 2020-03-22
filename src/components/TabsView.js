@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 
 import AuctionCard from './AuctionCard';
 function TabPanel(props) {
@@ -55,10 +56,14 @@ const TabsView = ({ auctions }) => {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        {auctions.ongoing.map(auction => <AuctionCard auction={auction} />)}
+        <Grid container direction="row" spacing={3}>
+          {auctions.ongoing.map(auction => <AuctionCard auction={auction} />)}
+        </Grid>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {auctions.past.map(auction => <AuctionCard auction={auction} />)}
+        <Grid container direction="row" spacing={3}>
+          {auctions.past.map(auction => <AuctionCard auction={auction} />)}
+        </Grid>
       </TabPanel>
 
     </div>

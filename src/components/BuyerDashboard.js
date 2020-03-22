@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+
 import isFuture from 'date-fns/isFuture';
 import AuctionCard from './AuctionCard';
 import styles from './Dashboard.module.scss';
 
-const BuyerDashboard = ({ data }) => {
+import TabsView from './TabsView';
+const BuyerDashboard = ({ width, data }) => {
+  const isSmallScreen = /xs|sm/.test(width);
   const [auctions, setAuctions] = useState({ongoing: [], past: []})
 
   useEffect(() => {
@@ -19,6 +23,8 @@ const BuyerDashboard = ({ data }) => {
     })
     setAuctions({ongoing, past});
   }, [])
+
+  if (isSmallScreen) return <TabsView auctions={auctions} />
   return (
     <div className={styles.main}>
       <div>
@@ -41,4 +47,4 @@ const BuyerDashboard = ({ data }) => {
   )
 }
 
-export default BuyerDashboard;
+export default withWidth()(BuyerDashboard);
