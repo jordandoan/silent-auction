@@ -16,7 +16,7 @@ import Auctions from './components/Auctions';
 import DetailedAuction from './components/DetailedAuction';
 import AuctionForm from './components/AuctionForm';
 import Dashboard from './components/Dashboard';
-
+import UserSettings from './components/UserSettings';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -34,6 +34,7 @@ function App() {
         <Route exact path="/auctions/auction/:id/edit" component={AuctionForm} />
         <PrivateRoute path="/auctions/add" component={AuctionForm} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
+        <PrivateRoute path="/settings" component={UserSettings} />
       </div>
     </UserContext.Provider>
   );
