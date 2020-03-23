@@ -91,8 +91,8 @@ export default withWidth()(function NavBar({ width }) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => {handleMenuClose(true)}}>Dashboard</MenuItem>
-      <MenuItem onClick={() => {handleMenuClose(false)}}>My account</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(true, '/dashboard')}}>Dashboard</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(true, '/settings')}}>My account</MenuItem>
       <MenuItem onClick={logout}>Log out</MenuItem>
     </Menu>
   );
