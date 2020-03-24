@@ -10,12 +10,24 @@ const UserInputField = ({data, fields, edit, type, handleChange, handleFieldView
   return (
     <div>
       <div>
-        {header[type]}
+        {header[type]}:
       </div>
-      {edit[type]
-      ? <input name={type} value={fields[type]} onChange={handleChange}/>
-      : <p>{data[type]} <button onClick={()=>{handleFieldView(type)}}>Edit</button></p>
-      }
+      <div>
+        {edit[type]
+          ? <input name={type} value={fields[type]} onChange={handleChange}/>
+          : <span>{data[type]}</span>
+        }
+      </div>
+      <div>
+        {edit[type]
+          ? 
+            <>
+              <button onClick={(e) => {handleSubmit(e, type)}}>Save</button>
+              <button onClick={() => {handleFieldView(type)}}>Cancel</button>
+            </>
+          : <button onClick={()=>{handleFieldView(type)}}>Edit</button>
+        }
+      </div>
     </div>
   )
 
