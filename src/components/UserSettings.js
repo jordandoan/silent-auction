@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import SettingsIcon from '@material-ui/icons/Settings';
 
+import UserInputField from './UserInputField';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const UserSettings = () => {
@@ -13,7 +14,7 @@ const UserSettings = () => {
     password: false,
     username: false
   })
-  const [fields, setFields] = useState({})
+  const [fields, setFields] = useState({first_name: "", last_name: "", username: ""})
   useEffect(() => {
     axiosWithAuth().get('/api/settings')
       .then(res => {
@@ -38,15 +39,21 @@ const UserSettings = () => {
   const handleFieldView = (field) => {
     setEdit({...edit, [field]: !edit[field]})
   }
-
+  const sendProps = (type) => {
+    return {
+      handleChange,
+      handleFieldView,
+      fields,
+      data,
+      edit,
+      type: type
+    }
+  }
   return (
     <Paper elevation={10}>
       <Typography variant="h4"><SettingsIcon/> Settings</Typography>
       <p>Role: {data.is_seller ? "Seller" : "Buyer"}</p>
-      {edit.username ? <p>"I am editable now!"<button onClick={()=> handleFieldView('username')}>Cancel</button></p> : <p>
-        Username: {data.username} 
-        <button onClick={()=> handleFieldView('username')}>Edit</button>
-      </p>}
+      <UserInputField {...sendProps('username')} />
       <p>First Name: {data.first_name}</p>
       <p>Last Name: {data.last_name}</p>
       <p>Change password</p>
