@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -6,8 +6,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import UserInputField from './UserInputField';
 import PasswordField from './PasswordField';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import UserContext from '../contexts/UserContext';
 
-const UserSettings = () => {
+const UserSettings = ({ history }) => {
+  const User = useContext(UserContext);
   const [data, setData] = useState({});
   const [edit, setEdit] = useState({
     first_name: false,
@@ -16,7 +18,14 @@ const UserSettings = () => {
     username: false
   })
 
-  const [fields, setFields] = useState({first_name: "", last_name: "", username: "", password: "", old_password: ""})
+  const [fields, setFields] = useState({
+    first_name: "", 
+    last_name: "", 
+    username: "", 
+    password: "", 
+    old_password: ""
+  })
+
   useEffect(() => {
     axiosWithAuth().get('/api/settings')
       .then(res => {
@@ -66,6 +75,15 @@ const UserSettings = () => {
     }
   }
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    axiosWithAuth().delete('/api/settings')
+      .then(() => {
+        localStorage.clear();
+        User.setToken(null)
+        history.push('/');
+      })
+  }
   return (
     <Paper elevation={10}>
       <Typography variant="h4"><SettingsIcon/> Settings</Typography>
@@ -74,7 +92,7 @@ const UserSettings = () => {
       <UserInputField {...sendProps('first_name')} />
       <UserInputField {...sendProps('last_name')} />
       <PasswordField {...sendProps('password')} />
-      <p>Delete Account</p>
+      <p onClick={handleDelete}>Delete Account</p>
     </Paper>
   )
 }
