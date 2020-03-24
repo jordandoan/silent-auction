@@ -43,10 +43,10 @@ export default withWidth()(function NavBar({ width }) {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = (isDashboard) => {
+  const handleMenuClose = (isDashboard, link) => {
     setAnchorEl(null);
     if (isDashboard) {
-      history.push('/dashboard');
+      history.push(link);
     } 
     handleMobileMenuClose();
   };
@@ -74,8 +74,8 @@ export default withWidth()(function NavBar({ width }) {
       open={isMenuOpen}
       onClose={() => handleMenuClose(false)}
     >
-      <MenuItem onClick={() => {handleMenuClose(true)}}>Dashboard</MenuItem>
-      <MenuItem onClick={() => {handleMenuClose(false)}}>My account</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(true, '/dashboard')}}>Dashboard</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(true, '/settings')}}>My account</MenuItem>
       <MenuItem onClick={logout}>Log out</MenuItem>
     </Menu>
   );
@@ -91,8 +91,8 @@ export default withWidth()(function NavBar({ width }) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => {handleMenuClose(true)}}>Dashboard</MenuItem>
-      <MenuItem onClick={() => {handleMenuClose(false)}}>My account</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(true, '/dashboard')}}>Dashboard</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(true, '/settings')}}>My account</MenuItem>
       <MenuItem onClick={logout}>Log out</MenuItem>
     </Menu>
   );

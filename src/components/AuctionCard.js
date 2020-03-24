@@ -39,7 +39,7 @@ export default function MediaCard({ auction }) {
   const classes = useStyles();
   const timeLeft = formatDistanceToNow(new Date(auction.date_ending));
   return (
-    <Grid item xs={12} sm={6} lg={4} xl={2}>
+    <Grid item xs={12} sm={12} lg={4} xl={2}>
       <Card className={classes.root}>
         <CardContent className={classes.header}>
         <Button size="small" disabled>

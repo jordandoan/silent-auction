@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
+import withWidth from '@material-ui/core/withWidth';
+
 import isFuture from 'date-fns/isFuture';
 
 import AuctionCard from './AuctionCard';
+import TabsView from './TabsView';
 
-const SellerDashboard = ({ data }) => {
+const SellerDashboard = ({ width, data }) => {
+  const isSmallScreen = /xs|sm/.test(width);
   const [auctions, setAuctions] = useState({ongoing: [], past: []})
 
   useEffect(() => {
@@ -19,12 +23,15 @@ const SellerDashboard = ({ data }) => {
     })
     setAuctions({ongoing, past});
   }, [])
+
+  if (isSmallScreen) return <TabsView auctions={auctions} />
   return (
+
     <div>
         <p>Ongoing auctions</p>
-        <Grid container spacing={7}>
+        {auctions.ongoing.length && <Grid container spacing={7}>
           {auctions.ongoing.map(auction => <AuctionCard auction={auction} />)}
-        </Grid>
+        </Grid>}
         <p>Past auctions</p>
         <Grid container spacing={7}>
           {auctions.past.map(auction => <AuctionCard auction={auction} />)}
@@ -33,4 +40,4 @@ const SellerDashboard = ({ data }) => {
   )
 }
 
-export default SellerDashboard;
+export default withWidth()(SellerDashboard);
