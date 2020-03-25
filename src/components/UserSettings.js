@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import SettingsIcon from '@material-ui/icons/Settings';
+import Grid from '@material-ui/core/Grid';
 
 import UserInputField from './UserInputField';
 import PasswordField from './PasswordField';
@@ -85,15 +86,19 @@ const UserSettings = ({ history }) => {
       })
   }
   return (
-    <Paper elevation={10}>
-      <Typography variant="h4"><SettingsIcon/> Settings</Typography>
-      <p>Role: {data.is_seller ? "Seller" : "Buyer"}</p>
-      <UserInputField {...sendProps('username')} />
-      <UserInputField {...sendProps('first_name')} />
-      <UserInputField {...sendProps('last_name')} />
-      <PasswordField {...sendProps('password')} />
-      <p onClick={handleDelete}>Delete Account</p>
-    </Paper>
+    <Grid container justify="center">
+      <Grid item xs={10}>
+        <Paper elevation={10}>
+          <Typography variant="h4"><SettingsIcon/> Settings</Typography>
+          <p>Role: {data.is_seller ? "Seller" : "Buyer"}</p>
+          <UserInputField {...sendProps('username')} />
+          <UserInputField {...sendProps('first_name')} />
+          <UserInputField {...sendProps('last_name')} />
+          <PasswordField {...sendProps('password')} />
+          <p onClick={handleDelete}>Delete Account</p>
+        </Paper>
+      </Grid>
+    </Grid>
   )
 }
 
