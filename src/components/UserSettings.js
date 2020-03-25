@@ -8,10 +8,11 @@ import UserInputField from './UserInputField';
 import PasswordField from './PasswordField';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import UserContext from '../contexts/UserContext';
-
+import Loading from './Loading';
 const UserSettings = ({ history }) => {
   const User = useContext(UserContext);
   const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState({
     first_name: false,
     last_name: false,
@@ -28,10 +29,12 @@ const UserSettings = ({ history }) => {
   })
 
   useEffect(() => {
+    setLoading(true)
     axiosWithAuth().get('/api/settings')
       .then(res => {
         setData(res.data);
         const { first_name, last_name, username } = res.data
+        setLoading(false)
         setFields({...fields, first_name, last_name, username})
       })
       .catch(err => {
@@ -85,9 +88,11 @@ const UserSettings = ({ history }) => {
         history.push('/');
       })
   }
+
+  if (loading) return <Loading>Loading User Info...</Loading>
   return (
     <Grid container justify="center">
-      <Grid item xs={10}>
+      <Grid item xs={10} md={4}>
         <Paper elevation={10}>
           <Typography variant="h4"><SettingsIcon/> Settings</Typography>
           <p>Role: {data.is_seller ? "Seller" : "Buyer"}</p>

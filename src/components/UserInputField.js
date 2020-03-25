@@ -1,4 +1,8 @@
 import React from 'react';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import styles from './UserInput.module.scss';
+
 const UserInputField = ({data, fields, edit, type, handleChange, handleFieldView, handleSubmit}) => {
 
   const header = {
@@ -8,27 +12,27 @@ const UserInputField = ({data, fields, edit, type, handleChange, handleFieldView
   }
 
   return (
-    <div>
-      <div>
+    <Grid container justify="space-between" md={8} className={styles.main}>
+      <Grid item xs={3}>
         {header[type]}:
-      </div>
-      <div>
+      </Grid>
+      <Grid item xs={6}>
         {edit[type]
           ? <input name={type} value={fields[type]} onChange={handleChange}/>
           : <span>{data[type]}</span>
         }
-      </div>
-      <div>
+      </Grid>
+      <Grid item xs={3}>
         {edit[type]
           ? 
             <>
-              <button onClick={(e) => {handleSubmit(e, type)}}>Save</button>
-              <button onClick={() => {handleFieldView(type)}}>Cancel</button>
+              <Typography variant="subtitle2" display="initial" className={styles.button} onClick={(e) => {handleSubmit(e, type)}}>Save</Typography>
+              <Typography variant="subtitle2" display="initial" className={styles.button} onClick={() => {handleFieldView(type)}}>Cancel</Typography>
             </>
-          : <button onClick={()=>{handleFieldView(type)}}>Edit</button>
+          : <Typography variant="subtitle2" display="initial" className={styles.button} onClick={()=>{handleFieldView(type)}}>Edit</Typography>
         }
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   )
 
 }
