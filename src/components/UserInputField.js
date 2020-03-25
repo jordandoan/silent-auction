@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import styles from './UserInput.module.scss';
 
 const UserInputField = ({data, fields, edit, type, handleChange, handleFieldView, handleSubmit, sellerRole}) => {
-  console.log(data[type]);
   const header = {
     username: 'Username',
     first_name: 'First Name',

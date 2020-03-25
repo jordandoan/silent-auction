@@ -6,9 +6,13 @@ import Grid from '@material-ui/core/Grid';
 
 import UserInputField from './UserInputField';
 import PasswordField from './PasswordField';
+import Loading from './Loading';
+
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import UserContext from '../contexts/UserContext';
-import Loading from './Loading';
+
+import styles from './UserSettings.module.scss';
+
 const UserSettings = ({ history }) => {
   const User = useContext(UserContext);
   const [data, setData] = useState({});
@@ -83,24 +87,26 @@ const UserSettings = ({ history }) => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    axiosWithAuth().delete('/api/settings')
-      .then(() => {
-        localStorage.clear();
-        User.setToken(null)
-        history.push('/');
-      })
+    // axiosWithAuth().delete('/api/settings')
+    //   .then(() => {
+    //     localStorage.clear();
+    //     User.setToken(null)
+    //     history.push('/');
+    //   })
   }
 
   if (loading) return <Loading>Loading User Info...</Loading>
   return (
     <Grid container justify="center">
       <Grid item xs={10} md={4}>
-        <Paper elevation={10}>
+        <Paper elevation={10} className={styles.paper}>
           <Typography variant="h4"><SettingsIcon/> Settings</Typography>
-          <UserInputField {...sendProps('is_seller')} sellerRole={true}/>
-          <UserInputField {...sendProps('username')} />
-          <UserInputField {...sendProps('first_name')} />
-          <UserInputField {...sendProps('last_name')} />
+          <div className={styles.fields}>
+            <UserInputField {...sendProps('is_seller')} sellerRole={true}/>
+            <UserInputField {...sendProps('username')} />
+            <UserInputField {...sendProps('first_name')} />
+            <UserInputField {...sendProps('last_name')} />
+          </div>
           <PasswordField {...sendProps('password')} />
           <p onClick={handleDelete}>Delete Account</p>
         </Paper>

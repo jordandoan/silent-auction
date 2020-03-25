@@ -2,18 +2,30 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Button from '@material-ui/core/Button';
 
-const PasswordField = ({data, fields, edit, type, handleChange, handleFieldView, handleSubmit}) => {
+import styles from './PasswordField.module.scss';
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    background: '#32CD32'
+  }
+}))
+
+const PasswordField = ({fields, edit, type, handleChange, handleFieldView, handleSubmit}) => {
+
+
+  const classes = useStyles();
   return (
     <div>
       <div>
         {edit[type]
           ? <>
-              <button onClick={(e) => {handleSubmit(e, type)}}>Save</button>
-              <button onClick={() => {handleFieldView(type)}}>Cancel</button>
+              <Button disableRipple={true} color="inherit" variant="contained" className={classes.button} disableElevation={true} onClick={(e) => {handleSubmit(e, type)}}>Save</Button>
+              <Button color="secondary" variant="contained" disableElevation={true} onClick={() => {handleFieldView(type)}}>Cancel</Button>
             </>
-          : <button onClick={() => {handleFieldView(type)}}>Change Password</button>
+          : <Button variant="contained" disableElevation={true} onClick={() => {handleFieldView(type)}}>Change Password</Button>
         }
       </div>
       <div>
