@@ -32,7 +32,9 @@ const UserSettings = ({ history }) => {
     setLoading(true)
     axiosWithAuth().get('/api/settings')
       .then(res => {
-        setData(res.data);
+        let newData = res.data;
+        newData.is_seller = res.data.is_seller ? "Seller" : "Buyer";
+        setData(newData);
         const { first_name, last_name, username } = res.data
         setLoading(false)
         setFields({...fields, first_name, last_name, username})
@@ -95,7 +97,7 @@ const UserSettings = ({ history }) => {
       <Grid item xs={10} md={4}>
         <Paper elevation={10}>
           <Typography variant="h4"><SettingsIcon/> Settings</Typography>
-          <p>Role: {data.is_seller ? "Seller" : "Buyer"}</p>
+          <UserInputField {...sendProps('is_seller')} sellerRole={true}/>
           <UserInputField {...sendProps('username')} />
           <UserInputField {...sendProps('first_name')} />
           <UserInputField {...sendProps('last_name')} />
