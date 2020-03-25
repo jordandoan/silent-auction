@@ -14,11 +14,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const PasswordField = ({fields, edit, type, handleChange, handleFieldView, handleSubmit}) => {
-
-
   const classes = useStyles();
+
   return (
-    <div>
+    <div className={styles.main}>
       <div>
         {edit[type]
           ? <>

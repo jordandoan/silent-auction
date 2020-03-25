@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 import UserInputField from './UserInputField';
 import PasswordField from './PasswordField';
@@ -106,9 +107,9 @@ const UserSettings = ({ history }) => {
             <UserInputField {...sendProps('username')} />
             <UserInputField {...sendProps('first_name')} />
             <UserInputField {...sendProps('last_name')} />
+            <PasswordField {...sendProps('password')} />
+            <Button color="secondary" variant="contained" onClick={handleDelete}>Delete Account</Button>
           </div>
-          <PasswordField {...sendProps('password')} />
-          <p onClick={handleDelete}>Delete Account</p>
         </Paper>
       </Grid>
     </Grid>
