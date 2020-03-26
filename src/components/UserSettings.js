@@ -62,7 +62,7 @@ const UserSettings = ({ history }) => {
     } else {
       putData[type] = fields[type];
     }
-    console.log(putData);
+
     axiosWithAuth().put('/api/settings', putData)
       .then(res => {
         setData({...data, [type]: fields[type]});
