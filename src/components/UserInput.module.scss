@@ -1,0 +1,21 @@
+.main {
+  margin: auto;
+}
+
+.button {
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 0 0.2rem;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.input {
+  background-color: rgba(0,0,0,0.1);
+}
+
+.title {
+  text-align: left;
+  padding: 0;
+}
