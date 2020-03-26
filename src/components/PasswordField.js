@@ -25,13 +25,13 @@ const PasswordField = ({fields, edit, type, handleChange, handleFieldView, handl
 
   const validatePassword = (e) => {
     e.preventDefault();
-    if (confirmed === fields.password) {
+    if (fields.password && confirmed === fields.password) {
       handleSubmit(e, type)
     } else {
-      alert('Passwords are not matching.')
+      alert('Passwords are not matching, or password field is blank.')
     }
   }
-  
+
   return (
     <div className={styles.main}>
       <div className={styles.fields}>

@@ -18,6 +18,7 @@ const UserSettings = ({ history }) => {
   const User = useContext(UserContext);
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState([true, ""])
   const [edit, setEdit] = useState({
     first_name: false,
     last_name: false,
@@ -53,21 +54,33 @@ const UserSettings = ({ history }) => {
     setFields({...fields, [e.target.name]: e.target.value})
   }
 
+  const validSubmission = type => {
+    return Boolean(fields[type])
+  }
+
   const handleSubmit = (e, type) => {
     e.preventDefault();
     let putData = {};
-    if (type === 'password') {
-      putData.password = fields.password;
-      putData.old_password = fields.old_password;
+    if (validSubmission(type)) {
+      if (type === 'password') {
+        putData.password = fields.password;
+        putData.old_password = fields.old_password;
+      } else {
+        putData[type] = fields[type];
+      }
+      axiosWithAuth().put('/api/settings', putData)
+        .then(res => {
+          setData({...data, [type]: fields[type]});
+          handleFieldView(type)
+          setMessage([false, "Succesfully saved."])
+        })
+        .catch(err => {
+          setMessage([true, err.response.data.message])
+        })
     } else {
-      putData[type] = fields[type];
+      setMessage([true, 'Blank Field']);
     }
 
-    axiosWithAuth().put('/api/settings', putData)
-      .then(res => {
-        setData({...data, [type]: fields[type]});
-        handleFieldView(type)
-      })
   }
 
   const handleFieldView = (type) => {
@@ -102,6 +115,7 @@ const UserSettings = ({ history }) => {
       <Grid item xs={10} md={4}>
         <Paper elevation={10} className={styles.paper}>
           <Typography variant="h4"><SettingsIcon/> Settings</Typography>
+          <Typography color={message[0] ? "error" : ""} variant="error">{message[1]}</Typography>
           <div className={styles.fields}>
             <UserInputField {...sendProps('is_seller')} sellerRole={true}/>
             <UserInputField {...sendProps('username')} />
